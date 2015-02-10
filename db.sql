@@ -1,0 +1,9 @@
+CREATE TABLE inventory (
+   id INT AUTO_INCREMENT,
+   name VARCHAR(255) NOT NULL,
+   category VARCHAR(255),
+   length INT UNSIGNED,
+   rented TINYINT(1) NOT NULL DEFAULT 1, 
+   PRIMARY KEY (id),
+   CONSTRAINT uq_NAME UNIQUE(name)
+);
