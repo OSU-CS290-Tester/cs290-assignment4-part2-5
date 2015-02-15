@@ -65,6 +65,28 @@ $stmt->close();
 </form>
 </div>
 
+<div>
+<select name="dropdown">
+<option>All Movies</option>
+<?php
+    if(!($stmt = $mysqli->prepare("SELECT DISTINCT category FROM inventory"))){
+                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                    }
+    
+    if(!$stmt->execute()){
+                echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    }
+    if(!$stmt->bind_result($name)){
+                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    }
+    while($stmt->fetch()){
+                echo '<option> ' . $name . '</option>\n';
+                    }
+    $stmt->close();
+    ?>
+</select>
+</div>
+
 </body>
 </html>
 
