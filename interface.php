@@ -68,7 +68,8 @@ if(!$mysqli || $mysqli->connect_errno){
     </tr>
 <?php
 //if (isset($_POST['Add']) || $_POST['filtercategory'] == 'All Movies'){
-    $query = "SELECT name, category, length, CASE WHEN rented = 1 THEN 'Available' ELSE 'Checked Out'END FROM inventory";
+    $query = "SELECT name, category, length, CASE WHEN rented = 1 THEN 'Available' ELSE 'Checked Out' END FROM inventory";
+    //$query = "SELECT name, category, length, rented FROM inventory";
 
     if(!($stmt = $mysqli->prepare($query))){
         echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
@@ -80,7 +81,11 @@ if(!$mysqli || $mysqli->connect_errno){
         echo "Bind failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
     }
     while ($stmt->fetch()){
-        echo  "<tr>\n<td>\n" . $name . "\n</td>\n<td>\n" . $category . "\n</td>\n<td>\n" . $length ."\n</td>\n<td>\n" . $rented ."\n</td>";
+        echo  "<tr>\n<td>\n" . $name . "\n</td>\n<td>\n" . $category . "\n</td>\n<td>\n" . $length ."\n</td>\n";
+        //echo "<td>\n" . $rented ."\n</td>";
+        echo "<td><form method = \"POST\" action = \"updatevideo.php\">";
+        echo "<input type=\"submit\" value=$rented>";
+        echo "</form></td>";
         echo "<td><form method = \"POST\" action = \"deletevideo.php\">";
         echo "<input type = \"hidden\" name=\" \" >";
         echo "<input type=\"submit\" value=\"Delete\">";
