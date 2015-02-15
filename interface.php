@@ -58,6 +58,13 @@ $stmt->close();
 ?>
 </table>
 </div>
+
+<div>
+<form method="POST" action = "deleteall.php">
+<p><input type="submit" name= "delete" value = "Delete All Videos"/></p>
+</form>
+</div>
+
 </body>
 </html>
 
