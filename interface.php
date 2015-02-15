@@ -28,33 +28,6 @@ if(!$mysqli || $mysqli->connect_errno){
 </form>
 </div>
 
-<p></p>
-<div>
-<fieldset><legend>Filter Videos</legend>
-<form method="POST" action = "filtervideos.php">
-<select name="filtercategory">
-<option>All Movies</option>
-<?php
-    if(!($stmt = $mysqli->prepare("SELECT DISTINCT category FROM inventory"))){
-                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
-                    }
-    
-    if(!$stmt->execute()){
-                echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-                    }
-    if(!$stmt->bind_result($name)){
-                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-                    }
-    while($stmt->fetch()){
-                echo '<option> ' . $name . '</option>\n';
-                    }
-    $stmt->close();
-    ?>
-</select>
-<p><input type="submit" name= "filter" value = "Filter Videos"/></p>
-</form>
-</fieldset>
-</div>
 
 <p></p>
 <div id = "video">
@@ -68,8 +41,7 @@ if(!$mysqli || $mysqli->connect_errno){
     </tr>
 <?php
 //if (isset($_POST['Add']) || $_POST['filtercategory'] == 'All Movies'){
-    $query = "SELECT name, category, length, CASE WHEN rented = 1 THEN 'Available' ELSE 'Checked Out' END FROM inventory";
-    //$query = "SELECT name, category, length, rented FROM inventory";
+    $query = "SELECT id, name, category, length, CASE WHEN rented = 1 THEN 'Available' ELSE 'Checked Out' END FROM inventory";
 
     if(!($stmt = $mysqli->prepare($query))){
         echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
@@ -77,17 +49,16 @@ if(!$mysqli || $mysqli->connect_errno){
     if(!$stmt->execute()){
         echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
     }
-    if(!$stmt->bind_result($name, $category, $length, $rented)) {
+    if(!$stmt->bind_result($id, $name, $category, $length, $rented)) {
         echo "Bind failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
     }
     while ($stmt->fetch()){
         echo  "<tr>\n<td>\n" . $name . "\n</td>\n<td>\n" . $category . "\n</td>\n<td>\n" . $length ."\n</td>\n";
-        //echo "<td>\n" . $rented ."\n</td>";
         echo "<td><form method = \"POST\" action = \"updatevideo.php\">";
-        echo "<input type=\"submit\" value=$rented>";
+        echo "<input type=\"submit\" name=$id value=$rented>";
         echo "</form></td>";
-        echo "<td><form method = \"POST\" action = \"deletevideo.php\">";
-        echo "<input type = \"hidden\" name=\" \" >";
+        echo "<td><form method = \"POST\" action = \"deletevideo.php?id=$id\">";
+        echo "<input type = \"hidden\" name=$id >";
         echo "<input type=\"submit\" value=\"Delete\">";
         echo "</form></td>\n</tr>";
     }
@@ -115,7 +86,7 @@ if(!$mysqli || $mysqli->connect_errno){
 <select name="filtercategory">
 <option>All Movies</option>
 <?php
-    if(!($stmt = $mysqli->prepare("SELECT DISTINCT category FROM inventory"))){
+    if(!($stmt = $mysqli->prepare("SELECT DISTINCT category FROM inventory WHERE category <> ''"))){
                 echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
                     }
     
