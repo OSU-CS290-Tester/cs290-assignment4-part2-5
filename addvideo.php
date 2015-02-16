@@ -2,21 +2,12 @@
 
 //Turn on error reporting
 ini_set('display_errors', 'On');
+include "password.php";
 //Connects to the database
-$mysqli = new mysqli("oniddb.cws.oregonstate.edu","wujiao-db","cUhlYd6WZm2g9lqP","wujiao-db");
+$mysqli = new mysqli("oniddb.cws.oregonstate.edu","wujiao-db",$password,"wujiao-db");
 if(!$mysqli || $mysqli->connect_errno){
     echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-?>
-
-<!DOCTYPE html >
-
-<html>
-
-<body>
-
-
-<?php
 
 $name = $_POST['name'];
 $category = $_POST['category'];
@@ -32,26 +23,9 @@ if(!($stmt->bind_param('ssi',$name, $category, $length))){
 }
 if(!$stmt->execute()){
     echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
-} else {
-    echo "Added " . $stmt->affected_rows . " rows to inventory table.";
 }
-
-?>
-
-
-<div>
-<p>The existing videos in the selected store are:</p>
-<table>
-    <tr>
-        <td>Name</td>
-        <td>Category</td>
-        <td>Length</td>
-    </tr>
-
-<?php
 /*
-$store = $_POST['store']; 
-$query = "SELECT gw_employees.first_name, gw_employees.last_name FROM gw_employees INNER JOIN gw_stores ON gw_stores.sid = gw_employees.store_id WHERE gw_stores.city = '$store'";
+$query = "SELECT name, category, length, rented FROM inventory";
 
 if(!($stmt = $mysqli->prepare($query))){
     echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
@@ -59,27 +33,19 @@ if(!($stmt = $mysqli->prepare($query))){
 if(!$stmt->execute()){
     echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
 }
-if(!$stmt->bind_result($firstname, $lastname)) {
+if(!$stmt->bind_result($name, $category, $length, $rented)) {
     echo "Bind failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 
 while ($stmt->fetch()){
-    echo  "<tr>\n<td>\n" . $firstname . "\n</td>\n<td>\n" . $lastname . "\n</td>\n</tr>";
+    echo  "<tr>\n<td>\n" . $name . "\n</td>\n<td>\n" . $category . "\n</td>\n<td>\n" . $length ."\n</td>\n<td>\n" . $rented ."\n</td>\n</tr>";
 }
-
+ */
 $stmt->close();
 
- */
+header('Location: index.php');
+exit;
 ?>
-                            </table>
-</div>
 
-
-
-</body>
-
-
-
-</html>
 
 

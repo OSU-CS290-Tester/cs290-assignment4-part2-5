@@ -2,15 +2,12 @@
 
 //Turn on error reporting
 ini_set('display_errors', 'On');
+include "password.php";
 //Connects to the database
-$mysqli = new mysqli("oniddb.cws.oregonstate.edu","wujiao-db","cUhlYd6WZm2g9lqP","wujiao-db");
+$mysqli = new mysqli("oniddb.cws.oregonstate.edu","wujiao-db",$password,"wujiao-db");
 if(!$mysqli || $mysqli->connect_errno){
     echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-?>
-
-
-<?php
 $id = $_GET['id'];
 $query = "DELETE FROM inventory WHERE id= '$id'";
 
@@ -30,15 +27,10 @@ if(!($stmt->bind_result($name, $category, $length))){
 while ($stmt->fetch()){
     echo  "<tr>\n<td>\n" . $name . "\n</td>\n<td>\n" . $category ."\n</td>\n<td>\n" . $length.  "\n</td>\n\n</tr>";
 }*/
-?>
-
-
-<?php
 $stmt->close();
 
-/*
-header('Location: interface.php');
-exit;*/
+header('Location: index.php');
+exit;
 ?>
 
 
