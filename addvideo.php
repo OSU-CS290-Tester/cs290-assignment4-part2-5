@@ -12,8 +12,12 @@ if(!$mysqli || $mysqli->connect_errno){
 $name = $_POST['name'];
 $category = $_POST['category'];
 $length = $_POST['length'];
+if (empty($name) || $length < 0 ||!is_numeric($length) ){
+    header('Location: index.php');
+    exit;
+}
+    $query = "INSERT INTO inventory(name, category, length) Values (?, ?, ?)";
 
-$query = "INSERT INTO inventory(name, category, length) Values (?, ?, ?)";
 
 if(!($stmt = $mysqli->prepare($query))){
     echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
